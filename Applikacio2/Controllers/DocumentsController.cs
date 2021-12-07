@@ -22,7 +22,12 @@ namespace Applikacio2.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
+            //return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
+            //return View(await _context.Documents.Where(d => d.MainID != 0)
+            //    .ToListAsync());
+            return View(await _context.Documents
+                .OrderBy(d => d.ID)
+                .ToListAsync());
         }
 
         // GET: Documents/Children/5 (Document's Children)
@@ -39,7 +44,8 @@ namespace Applikacio2.Controllers
             {
                 return NotFound();
             }
-            return View(await _context.Documents.Where(d => d.MainID != document.ID).OrderBy(d => d.ID).ToListAsync());
+
+            return View(await _context.Documents.Where(d => d.MainID == document.ID).OrderBy(d => d.ID).ToListAsync());
         }
 
         // GET: Documents/Details/5
