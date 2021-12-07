@@ -25,6 +25,23 @@ namespace Applikacio2.Controllers
             return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
         }
 
+        // GET: Documents/Children/5 (Document's Children)
+        public async Task<IActionResult> Children(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var document = await _context.Documents
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (document == null)
+            {
+                return NotFound();
+            }
+            return View(await _context.Documents.Where(d => d.MainID != document.ID).OrderBy(d => d.ID).ToListAsync());
+        }
+
         // GET: Documents/Details/5
         public async Task<IActionResult> Details(int? id)
         {
