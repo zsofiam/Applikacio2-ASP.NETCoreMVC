@@ -20,9 +20,28 @@ namespace Applikacio2.Controllers
         }
 
         // GET: Documents
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
+            var documents = from d in _context.Documents
+                            where d.MainID != 0
+                            orderby d.ID
+                            select d;
+
+            //var documents = _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                //documents = documents.Where(s => s.Title.Contains(searchString));
+
+                documents = from s in documents
+                                where s.Title.Contains(searchString)
+                                orderby s.ID
+                                select s;
+
+            }
+            //return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
+            return View(await documents.ToListAsync());
         }
 
         // GET: Documents/Details/5
