@@ -18,7 +18,7 @@ namespace Applikacio2.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Documents
         public async Task<IActionResult> Index(string searchString)
         {
