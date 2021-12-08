@@ -25,6 +25,7 @@ namespace Applikacio2.Controllers
             var documents = from d in _context.Documents
                             where d.MainID != 0
                             orderby d.ID
+                            ascending
                             select d;
 
             //var documents = _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync();
