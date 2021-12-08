@@ -31,6 +31,7 @@ namespace Applikacio2
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddControllersWithViews();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +48,8 @@ namespace Applikacio2
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseRouting();
