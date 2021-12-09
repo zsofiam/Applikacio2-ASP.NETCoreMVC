@@ -21,7 +21,7 @@ namespace Applikacio2
         public virtual DbSet<Dokumentum> Dokumenta { get; set; }
         public virtual DbSet<Esemeny> Esemenies { get; set; }
         public virtual DbSet<Naplo> Naplos { get; set; }
-        public virtual DbSet<Account> Account { get; set; }
+        public virtual DbSet<Account> Accounts{ get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -104,14 +104,10 @@ namespace Applikacio2
             {
                 entity.ToTable("account");
 
-                entity.Property(a => a.Id)
+                entity.Property(a => a.Username)
                     .ValueGeneratedNever()
-                    .HasColumnName("id");
-
-                entity.Property(a => a.Name)
-                    .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("Name");
+                    .HasColumnName("Username");
 
                 entity.Property(a => a.Password)
                     .IsRequired()

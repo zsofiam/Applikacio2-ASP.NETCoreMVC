@@ -4,8 +4,6 @@
     ViewData["Title"] = "Success";
 }
 
-<h1>Success</h1>
-
 
 <html>
 <head>
@@ -14,10 +12,10 @@
 </head>
 <body>
 
-    <h3>Success Page</h3>
-    Welcome @Context.Session.GetString("username")
+    <h3>You are logged in</h3>
+    Hello @Context.Session.GetString("username"), you can now view the Documents!
     <br>
-    <a asp-controller="account" asp-action="logout">Logout</a>
+    <a asp-controller="accounts" asp-action="logout">Logout</a>
 
 </body>
 </html>
