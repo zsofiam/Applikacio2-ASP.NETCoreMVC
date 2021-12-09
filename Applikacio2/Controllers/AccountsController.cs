@@ -3,16 +3,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Applikacio2.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Applikacio2.Controllers
 {
     public class AccountsController : Controller
     {
         private readonly registryContext _context;
+        private readonly ILogger _logger;
 
-        public AccountsController(registryContext context)
+        public AccountsController(registryContext context, ILogger<AccountsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         
@@ -30,6 +34,8 @@ namespace Applikacio2.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
+            _logger.LogInformation("Login attempt at " + DateTime.Now);
+
             if (username != null && password != null)
             {
                 var loggedInUser = _context.Accounts
