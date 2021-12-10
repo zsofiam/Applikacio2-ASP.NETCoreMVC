@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Applikacio2;
 using Microsoft.AspNetCore.Http;
+using System.Dynamic;
 
 namespace Applikacio2.Controllers
 {
@@ -87,13 +88,26 @@ namespace Applikacio2.Controllers
                 ascending
                 select d;
 
+
+            ViewBag.Message = "Welcome to my demo!";
+            ViewData["Events"] = events;
+            ViewData["Children"] = children;
+
+
             if (document == null)
             {
                 return NotFound();
             }
 
             return View(await _context.Dokumenta.Where(d => d.MainId == document.Id).OrderBy(d => d.Id).ToListAsync());
+            //return View();
         }
+
+        private dynamic GetTeachers()
+        {
+            throw new NotImplementedException();
+        }
+
         // GET: Dokumentums/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -115,6 +129,36 @@ namespace Applikacio2.Controllers
 
             return View(dokumentum);
         }
+
+        // GET: Dokumentums/Details/5
+        public async Task<IActionResult> Events(int? id)
+        {
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                return View("Empty");
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var dokumentum = await _context.Dokumenta
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (dokumentum == null)
+            {
+                return NotFound();
+            }
+
+            var events = from e in _context.Esemenies
+                         join n in _context.Naplos on e.Id equals n.EsemenyId
+                         join d in _context.Dokumenta on n.DokumentumId equals d.Id
+                         where d.Id == id
+                         orderby n.HappenedAt
+                         select e;
+
+            return View();
+        }
+
 
     }
 }
