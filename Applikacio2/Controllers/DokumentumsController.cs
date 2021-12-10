@@ -27,8 +27,8 @@ namespace Applikacio2.Controllers
                 from d in _context.Dokumenta
                 join n in _context.Naplos on d.Id equals n.DokumentumId
                 join e in _context.Esemenies on n.EsemenyId equals e.Id
-                where d.MainId != 0
-                && e.Title == "Letrehozas"
+                where d.MainId == 0
+                && e.Title == "Beerkezes"
                 orderby n.HappenedAt
                 ascending
                 select d;
@@ -69,6 +69,17 @@ namespace Applikacio2.Controllers
 
             var document = await _context.Dokumenta
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var children =
+                from d in _context.Dokumenta
+                join n in _context.Naplos on d.Id equals n.DokumentumId
+                join e in _context.Esemenies on n.EsemenyId equals e.Id
+                where d.MainId == document.Id
+                && e.Title == "Letrehozas"
+                orderby n.HappenedAt
+                ascending
+                select d;
+
             if (document == null)
             {
                 return NotFound();
