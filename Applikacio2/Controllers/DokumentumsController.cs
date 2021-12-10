@@ -70,6 +70,13 @@ namespace Applikacio2.Controllers
             var document = await _context.Dokumenta
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            var events = from e in _context.Esemenies
+                         join n in _context.Naplos on e.Id equals n.EsemenyId
+                         join d in _context.Dokumenta on n.DokumentumId equals d.Id
+                         where d == document
+                         orderby n.HappenedAt
+                         select e;
+
             var children =
                 from d in _context.Dokumenta
                 join n in _context.Naplos on d.Id equals n.DokumentumId
