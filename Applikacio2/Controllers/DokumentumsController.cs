@@ -22,11 +22,16 @@ namespace Applikacio2.Controllers
         // GET: Dokumentums
         public async Task<IActionResult> Index(string searchString)
         {
-            var documents = from d in _context.Dokumenta
-                            where d.MainId != 0
-                            orderby d.Id
-                            ascending
-                            select d;
+
+            var documents =
+                from d in _context.Dokumenta
+                join n in _context.Naplos on d.Id equals n.DokumentumId
+                join e in _context.Esemenies on n.EsemenyId equals e.Id
+                where d.MainId != 0
+                && e.Title == "Letrehozas"
+                orderby n.HappenedAt
+                ascending
+                select d;
 
             //var documents = _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync();
 
