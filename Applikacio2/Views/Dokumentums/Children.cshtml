@@ -1,49 +1,86 @@
-﻿@model IEnumerable<Applikacio2.Dokumentum>
-@*@model IEnumerable<Applikacio2.Models.ListedEvent>*@
+﻿@model dynamic
 @{
-    ViewData["Title"] = "Children";
+    ViewData["Title"] = "Events and Children";
 }
 
-<h1>Children of Document</h1>
+<h1>Events and Children of Document</h1>
+@{
+
+    IList<ListedEvent> events = ViewData["Events"] as IList<ListedEvent>;
+    IEnumerable<Dokumentum> children = ViewData["Children"] as IEnumerable<Dokumentum>;
+}
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Event
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Extension)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MainId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Source)
+                Happened At
             </th>
 
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (ViewData["Events"] != null)
         {
-            <tr>
-                <td>
-                    <a asp-action="Events" asp-route-id="@item.Id">
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Extension)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MainId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Source)
-                </td>
+            @foreach (var listedEvent in events)
+            {
+                <tr>
+                    <td>
+                        @listedEvent.Event
+                    </td>
+                    <td>
+                        @listedEvent.Date
+                    </td>
+                  
 
-            </tr>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Extension
+            </th>
+            <th>
+                MainId
+            </th>
+            <th>
+                Source
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewData["Children"] != null)
+        {
+            @foreach (var child in children)
+            {
+                <tr>
+                    <td>
+                        @child.Title
+                    </td>
+                    <td>
+                        @child.Extension
+                    </td>
+                    <td>
+                        @child.MainId
+                    </td>
+                    <td>
+                        @child.Source
+                    </td>
+
+                </tr>
+            }
         }
     </tbody>
 </table>

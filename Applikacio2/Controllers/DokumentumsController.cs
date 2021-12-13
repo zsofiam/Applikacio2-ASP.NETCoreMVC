@@ -95,10 +95,12 @@ namespace Applikacio2.Controllers
                 ascending
                 select d;
 
+            var Events = await events.ToListAsync();
+            var Children = await children.ToListAsync();
 
             ViewBag.Message = "Welcome to my demo!";
-            ViewData["Events"] = events;
-            ViewData["Children"] = children;
+            ViewData["Events"] = Events;
+            ViewData["Children"] = Children;
 
 
             if (document == null)
@@ -106,8 +108,9 @@ namespace Applikacio2.Controllers
                 return NotFound();
             }
 
-            return View(await _context.Dokumenta.Where(d => d.MainId == document.Id).OrderBy(d => d.Id).ToListAsync());
+            //return View(await _context.Dokumenta.Where(d => d.MainId == document.Id).OrderBy(d => d.Id).ToListAsync());
 
+            return View();
         }
 
         private dynamic GetTeachers()
