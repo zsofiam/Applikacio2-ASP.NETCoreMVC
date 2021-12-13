@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@*@model dynamic*@
 @{
     ViewData["Title"] = "Events and Children";
 }
@@ -9,7 +9,7 @@
     IList<ListedEvent> events = ViewData["Events"] as IList<ListedEvent>;
     IEnumerable<Dokumentum> children = ViewData["Children"] as IEnumerable<Dokumentum>;
 }
-
+<br/>
 <table class="table">
     <thead>
         <tr>
@@ -41,12 +41,12 @@
         }
     </tbody>
 </table>
-
+<br />
 <table class="table">
     <thead>
         <tr>
             <th>
-                Title
+                Document Title
             </th>
             <th>
                 Extension

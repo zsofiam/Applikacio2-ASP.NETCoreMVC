@@ -42,11 +42,11 @@ namespace Applikacio2.Controllers
 
                 //documents = documents.Where(s => s.Title.Contains(searchString));
 
-                documents = from s in documents
-                            where s.Title.Contains(searchString)
-                            orderby s.Id
-                            select s;
-
+                //documents = from s in documents
+                //            where s.Title.Contains(searchString)
+                //            orderby s.Id
+                //            select s;
+                return RedirectToAction(nameof(FilteredIndex), new { searchString = searchString });
             }
             //return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
             if (HttpContext.Session.GetString("username") != null)
@@ -55,6 +55,28 @@ namespace Applikacio2.Controllers
             }
             return View("Empty");
             //return View(await _context.Dokumenta.ToListAsync());
+        }
+
+        public async Task<IActionResult> FilteredIndex(string searchString)
+        {
+            if (HttpContext.Session.GetString("username") != null)
+            {
+            
+            var documents =
+                from d in _context.Dokumenta
+                join n in _context.Naplos on d.Id equals n.DokumentumId
+                join e in _context.Esemenies on n.EsemenyId equals e.Id
+                where d.MainId == 0
+                && e.Title == "Beerkezes"
+                orderby n.HappenedAt
+                ascending
+                select d;
+
+                documents = documents.Where(s => s.Title.Contains(searchString));
+
+                return View(await documents.ToListAsync());
+            }
+            return View("Empty");
         }
         // GET: Documents/Children/5 (Document's Children)
         public async Task<IActionResult> Children(int? id)
