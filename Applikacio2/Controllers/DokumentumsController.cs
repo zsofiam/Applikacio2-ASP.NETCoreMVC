@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Applikacio2;
 using Microsoft.AspNetCore.Http;
 using System.Dynamic;
+using Applikacio2.Models;
 
 namespace Applikacio2.Controllers
 {
@@ -71,13 +72,19 @@ namespace Applikacio2.Controllers
             var document = await _context.Dokumenta
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            //EventsListed
             var events = from e in _context.Esemenies
                          join n in _context.Naplos on e.Id equals n.EsemenyId
                          join d in _context.Dokumenta on n.DokumentumId equals d.Id
-                         where d == document
+                         where d.Id == id
                          orderby n.HappenedAt
-                         select e;
+                         select new ListedEvent
+                         {
+                             Event = e.Title,
+                             Date = n.HappenedAt
+                         };
 
+            //ChildrenListed
             var children =
                 from d in _context.Dokumenta
                 join n in _context.Naplos on d.Id equals n.DokumentumId
@@ -100,7 +107,7 @@ namespace Applikacio2.Controllers
             }
 
             return View(await _context.Dokumenta.Where(d => d.MainId == document.Id).OrderBy(d => d.Id).ToListAsync());
-            //return View();
+
         }
 
         private dynamic GetTeachers()
@@ -154,9 +161,13 @@ namespace Applikacio2.Controllers
                          join d in _context.Dokumenta on n.DokumentumId equals d.Id
                          where d.Id == id
                          orderby n.HappenedAt
-                         select e;
+                         select new ListedEvent
+                         {
+                             Event = e.Title,
+                             Date = n.HappenedAt
+                         };
 
-            return View();
+            return View(await events.ToListAsync());
         }
 
 
