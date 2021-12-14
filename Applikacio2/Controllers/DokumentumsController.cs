@@ -35,26 +35,19 @@ namespace Applikacio2.Controllers
                 ascending
                 select d;
 
-            //var documents = _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {
 
-                //documents = documents.Where(s => s.Title.Contains(searchString));
-
-                //documents = from s in documents
-                //            where s.Title.Contains(searchString)
-                //            orderby s.Id
-                //            select s;
                 return RedirectToAction(nameof(FilteredIndex), new { searchString = searchString });
             }
-            //return View(await _context.Documents.Where(d => d.MainID != 0).OrderBy(d => d.ID).ToListAsync());
+           
             if (HttpContext.Session.GetString("username") != null)
             {
                 return View(await documents.ToListAsync());
             }
             return View("Empty");
-            //return View(await _context.Dokumenta.ToListAsync());
+            
         }
 
         public async Task<IActionResult> FilteredIndex(string searchString)
@@ -95,16 +88,7 @@ namespace Applikacio2.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             //EventsListed
-            var events = from e in _context.Esemenies
-                         join n in _context.Naplos on e.Id equals n.EsemenyId
-                         join d in _context.Dokumenta on n.DokumentumId equals d.Id
-                         where d.Id == id
-                         orderby n.HappenedAt
-                         select new ListedEvent
-                         {
-                             Event = e.Title,
-                             Date = n.HappenedAt
-                         };
+            IQueryable<ListedEvent> events = GetEvents(id);
 
             //ChildrenListed
             var children =
@@ -129,8 +113,6 @@ namespace Applikacio2.Controllers
             {
                 return NotFound();
             }
-
-            //return View(await _context.Dokumenta.Where(d => d.MainId == document.Id).OrderBy(d => d.Id).ToListAsync());
 
             return View();
         }
@@ -162,7 +144,6 @@ namespace Applikacio2.Controllers
             return View(dokumentum);
         }
 
-        // GET: Dokumentums/Details/5
         public async Task<IActionResult> Events(int? id)
         {
             if (HttpContext.Session.GetString("username") == null)
@@ -180,21 +161,23 @@ namespace Applikacio2.Controllers
             {
                 return NotFound();
             }
-
-            var events = from e in _context.Esemenies
-                         join n in _context.Naplos on e.Id equals n.EsemenyId
-                         join d in _context.Dokumenta on n.DokumentumId equals d.Id
-                         where d.Id == id
-                         orderby n.HappenedAt
-                         select new ListedEvent
-                         {
-                             Event = e.Title,
-                             Date = n.HappenedAt
-                         };
+            IQueryable<ListedEvent> events = GetEvents(id);
 
             return View(await events.ToListAsync());
         }
 
-
+        private IQueryable<ListedEvent> GetEvents(int? id)
+        {
+            return from e in _context.Esemenies
+                   join n in _context.Naplos on e.Id equals n.EsemenyId
+                   join d in _context.Dokumenta on n.DokumentumId equals d.Id
+                   where d.Id == id
+                   orderby n.HappenedAt
+                   select new ListedEvent
+                   {
+                       Event = e.Title,
+                       Date = n.HappenedAt
+                   };
+        }
     }
 }
