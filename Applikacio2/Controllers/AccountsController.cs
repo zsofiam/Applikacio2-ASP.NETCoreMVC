@@ -38,21 +38,63 @@ namespace Applikacio2.Controllers
             _logger.LogInformation("Login attempt from " + "IP ADDRESS " +
                 Request.HttpContext.Connection.RemoteIpAddress);
 
+            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
+           
+            var loginEvent = new LoginEvent();
+
             if (username != null && password != null)
             {
+                
                 var loggedInUser = _context.Accounts
                 .Where(x => x.Username == username && x.Password == password).FirstOrDefault();
 
                 if (loggedInUser == null) {
+                    //query1
+
+                    loginEvent.IPAddress = ipAddress.ToString();
+                    loginEvent.HappenedAt = DateTime.Now;
+                    loginEvent.Username = username;
+                    loginEvent.Result = "unsuccessful";
+                    loginEvent.Counter = 0;
+
+                    _context.LoginEvents.Add(loginEvent);
+
+                    _context.SaveChanges();
+
                     ViewBag.error = "Invalid Username or Password";
                     return View("Login");
                    
                 }
-                HttpContext.Session.SetString("username", loggedInUser.Username);
+                else {
+                    //query2
+
+                    loginEvent.IPAddress = ipAddress.ToString();
+                    loginEvent.HappenedAt = DateTime.Now;
+                    loginEvent.Username = username;
+                    loginEvent.Result = "successful";
+                    loginEvent.Counter = 1;
+
+                    _context.LoginEvents.Add(loginEvent);
+
+                    _context.SaveChanges();
+
+                    HttpContext.Session.SetString("username", loggedInUser.Username);
                 return View("Success");
+                }
             }
             else
             {
+
+                loginEvent.IPAddress = ipAddress.ToString();
+                loginEvent.HappenedAt = DateTime.Now;
+                loginEvent.Username = username;
+                loginEvent.Result = "unsuccessful";
+                loginEvent.Counter = 0;
+
+                _context.LoginEvents.Add(loginEvent);
+
+                _context.SaveChanges();
+
                 ViewBag.error = "Invalid Username or Password";
                 return View("Login");
             }
