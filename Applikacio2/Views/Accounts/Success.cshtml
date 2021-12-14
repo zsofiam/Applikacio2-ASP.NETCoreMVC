@@ -1,0 +1,21 @@
+﻿
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Success";
+}
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Success</title>
+</head>
+<body>
+
+    <h3>You are logged in</h3>
+    Hello @Context.Session.GetString("username"), you can now view the Documents!
+    <br>
+    <a asp-controller="accounts" asp-action="logout">Logout</a>
+
+</body>
+</html>

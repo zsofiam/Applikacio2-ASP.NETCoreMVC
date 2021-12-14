@@ -1,0 +1,88 @@
+﻿@*@model dynamic*@
+@{
+    ViewData["Title"] = "Events and Children";
+}
+
+<h1>Events and Children of Document</h1>
+@{
+
+    IList<ListedEvent> events = ViewData["Events"] as IList<ListedEvent>;
+    IEnumerable<Dokumentum> children = ViewData["Children"] as IEnumerable<Dokumentum>;
+}
+<br/>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Event
+            </th>
+            <th>
+                Happened At
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewData["Events"] != null)
+        {
+            @foreach (var listedEvent in events)
+            {
+                <tr>
+                    <td>
+                        @listedEvent.Event
+                    </td>
+                    <td>
+                        @listedEvent.Date
+                    </td>
+                  
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Document Title
+            </th>
+            <th>
+                Extension
+            </th>
+            <th>
+                MainId
+            </th>
+            <th>
+                Source
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewData["Children"] != null)
+        {
+            @foreach (var child in children)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Events" asp-route-id="@child.Id">
+                            @child.Title
+                            </a>
+                    </td>
+                    <td>
+                        @child.Extension
+                    </td>
+                    <td>
+                        @child.MainId
+                    </td>
+                    <td>
+                        @child.Source
+                    </td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
