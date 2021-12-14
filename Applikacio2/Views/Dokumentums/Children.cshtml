@@ -67,7 +67,9 @@
             {
                 <tr>
                     <td>
-                        @child.Title
+                        <a asp-action="Events" asp-route-id="@child.Id">
+                            @child.Title
+                            </a>
                     </td>
                     <td>
                         @child.Extension
