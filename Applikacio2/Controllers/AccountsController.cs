@@ -35,6 +35,8 @@ namespace Applikacio2.Controllers
         public IActionResult Login(string username, string password)
         {
             _logger.LogInformation("Login attempt at " + DateTime.Now);
+            _logger.LogInformation("Login attempt from " + "IP ADDRESS " +
+                Request.HttpContext.Connection.RemoteIpAddress);
 
             if (username != null && password != null)
             {

@@ -4,14 +4,16 @@ using Applikacio2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Applikacio2.Migrations
 {
     [DbContext(typeof(registryContext))]
-    partial class registryContextModelSnapshot : ModelSnapshot
+    [Migration("20211214124841_add_LoginEvent")]
+    partial class add_LoginEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,9 +102,6 @@ namespace Applikacio2.Migrations
 
                     b.Property<DateTime>("HappenedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("IPAddress")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Result")
                         .HasColumnType("nvarchar(max)");

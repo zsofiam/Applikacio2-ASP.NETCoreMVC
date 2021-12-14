@@ -22,6 +22,7 @@ namespace Applikacio2
         public virtual DbSet<Esemeny> Esemenies { get; set; }
         public virtual DbSet<Naplo> Naplos { get; set; }
         public virtual DbSet<Account> Accounts{ get; set; }
+        public virtual DbSet<LoginEvent> LoginEvents { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
